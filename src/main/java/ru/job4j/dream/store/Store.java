@@ -8,7 +8,7 @@ import java.util.Collection;
 public interface Store {
     Collection<Post> findAllPosts();
 
-    Collection<Candidate> findAllCandidates();
+    Collection<Candidate> findAllCandidates() throws SQLException;
 
     void save(Post post) throws SQLException;
 
