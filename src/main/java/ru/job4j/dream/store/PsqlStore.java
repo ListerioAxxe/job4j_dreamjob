@@ -67,8 +67,21 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Collection<Candidate> findAllCandidates() {
-        return null;
+    public Collection<Candidate> findAllCandidates() throws SQLException {
+        List<Candidate> candidatesList = new ArrayList<>();
+        try(Connection cn = pool.getConnection();
+            PreparedStatement ps = cn.prepareStatement("select * from candidates")) {
+            try (ResultSet candidates = ps.executeQuery()) {
+                while (candidates.next()) {
+                    candidatesList.add(new Candidate(candidates.getInt("id"),
+                                                     candidates.getString("name")));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return candidatesList;
+        }
     }
 
     @Override
